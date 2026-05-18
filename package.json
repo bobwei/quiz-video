@@ -1,0 +1,19 @@
+{
+  "name": "quiz-video",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "stamp": "node scripts/stamp-assets.mjs",
+    "gen-icons": "node scripts/gen-icons.mjs",
+    "predev": "npm run stamp",
+    "dev": "npx --yes hyperframes@0.6.20 preview",
+    "precheck": "npm run stamp",
+    "check": "npx --yes hyperframes@0.6.20 lint && npx --yes hyperframes@0.6.20 inspect",
+    "prerender": "npm run stamp",
+    "render": "npx --yes hyperframes@0.6.20 render",
+    "publish": "npx --yes hyperframes@0.6.20 publish"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.0"
+  }
+}

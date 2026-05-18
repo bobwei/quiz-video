@@ -1,0 +1,266 @@
+<!doctype html>
+<html
+  lang="zh-Hant"
+  data-composition-variables='[
+    {"id":"leadIn","type":"string","label":"引導句","default":"究竟他"},
+    {"id":"title","type":"string","label":"主標題","default":"為什麼不對關係做選擇"},
+    {"id":"pill","type":"string","label":"子題（粉色 pill）","default":"你最喜歡哪款包裝"},
+    {"id":"quote","type":"string","label":"底部引言","default":"「留言你的答案，領取下一步策略」"},
+    {"id":"iconA","type":"string","label":"選項 A icon 路徑","default":"assets/icon-a-bow.png?v=0527d3a62a"},
+    {"id":"iconB","type":"string","label":"選項 B icon 路徑","default":"assets/icon-b-cutlery.png?v=351d862603"},
+    {"id":"iconC","type":"string","label":"選項 C icon 路徑","default":"assets/icon-c-giftbox.png?v=5222665439"},
+    {"id":"iconD","type":"string","label":"選項 D icon 路徑","default":"assets/icon-d-bag.png?v=e3fccea249"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "jf-openhuninn";
+        src: url("fonts/jf-openhuninn.woff2?v=c2bf585ccb") format("woff2");
+        font-weight: 400;
+        font-style: normal;
+        font-display: block;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #000;
+        font-family: "jf-openhuninn", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        color: #fff;
+      }
+
+      .bg-video {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+
+      .bg-tint {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%);
+        z-index: 1;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 320px 30px 200px;
+        gap: 28px;
+      }
+
+      .lead-in {
+        font-family: "jf-openhuninn", sans-serif;
+        font-weight: 400;
+        font-size: 70px;
+        letter-spacing: 0.3em;
+        padding-left: 0.3em;
+        color: #ffffff;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+      }
+
+      .title {
+        font-family: "jf-openhuninn", sans-serif;
+        font-weight: 400;
+        font-size: 86px;
+        letter-spacing: 0.06em;
+        padding-left: 0.06em;
+        color: #ffffff;
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.75);
+        text-align: center;
+        line-height: 1.25;
+        white-space: nowrap;
+      }
+
+      .divider {
+        width: 820px;
+        height: 2px;
+        background: rgba(255, 255, 255, 0.7);
+        transform-origin: center;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+      }
+
+      .pill {
+        background: rgba(232, 122, 156, 0.85);
+        color: #fff;
+        font-family: "jf-openhuninn", sans-serif;
+        font-weight: 400;
+        font-size: 58px;
+        letter-spacing: 0.08em;
+        padding: 18px 56px;
+        border-radius: 28px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+      }
+
+      .options {
+        margin-top: 40px;
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 36px;
+        column-gap: 40px;
+      }
+
+      .opt {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .opt-letter {
+        font-family: "jf-openhuninn", sans-serif;
+        font-weight: 400;
+        font-size: 84px;
+        color: #fff;
+        line-height: 1;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+      }
+
+      .opt-icon {
+        width: 280px;
+        height: 280px;
+        object-fit: contain;
+        filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+      }
+
+      .quote {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 140px;
+        text-align: center;
+        font-family: "jf-openhuninn", sans-serif;
+        font-weight: 400;
+        font-size: 48px;
+        letter-spacing: 0.06em;
+        color: #ffffff;
+        text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="quiz"
+      data-start="0"
+      data-duration="10"
+      data-width="1080"
+      data-height="1920"
+    >
+      <video
+        id="bg"
+        class="clip bg-video"
+        data-start="0"
+        data-duration="10"
+        data-track-index="0"
+        src="assets/bg-coffee.mp4?v=463fd9f036"
+        muted
+        playsinline
+      ></video>
+
+      <div id="tint" class="clip bg-tint" data-start="0" data-duration="10" data-track-index="1"></div>
+
+      <div id="scene" class="clip scene" data-start="0" data-duration="10" data-track-index="2">
+        <div id="lead" class="lead-in"></div>
+        <div id="title-el" class="title"></div>
+        <div id="divider" class="divider"></div>
+        <div id="pill-el" class="pill"></div>
+
+        <div class="options">
+          <div class="opt">
+            <div id="letter-a" class="opt-letter">A</div>
+            <img id="icon-a" class="opt-icon" alt="" src="assets/icon-a-bow.png?v=0527d3a62a" />
+          </div>
+          <div class="opt">
+            <div id="letter-b" class="opt-letter">B</div>
+            <img id="icon-b" class="opt-icon" alt="" src="assets/icon-b-cutlery.png?v=351d862603" />
+          </div>
+          <div class="opt">
+            <div id="letter-c" class="opt-letter">C</div>
+            <img id="icon-c" class="opt-icon" alt="" src="assets/icon-c-giftbox.png?v=5222665439" />
+          </div>
+          <div class="opt">
+            <div id="letter-d" class="opt-letter">D</div>
+            <img id="icon-d" class="opt-icon" alt="" src="assets/icon-d-bag.png?v=e3fccea249" />
+          </div>
+        </div>
+      </div>
+
+      <div id="quote-el" class="clip quote" data-start="0" data-duration="10" data-track-index="3"></div>
+    </div>
+
+    <script>
+      const v = (window.__hyperframes && window.__hyperframes.getVariables)
+        ? window.__hyperframes.getVariables()
+        : {
+            leadIn: "究竟他",
+            title: "為什麼不對關係做選擇",
+            pill: "你最喜歡哪款包裝",
+            quote: "「留言你的答案，領取下一步策略」",
+            iconA: "assets/icon-a-bow.png?v=0527d3a62a",
+            iconB: "assets/icon-b-cutlery.png?v=351d862603",
+            iconC: "assets/icon-c-giftbox.png?v=5222665439",
+            iconD: "assets/icon-d-bag.png?v=e3fccea249",
+          };
+      document.getElementById("lead").textContent = v.leadIn;
+      document.getElementById("title-el").textContent = v.title;
+      document.getElementById("pill-el").textContent = v.pill;
+      document.getElementById("quote-el").textContent = v.quote;
+      document.getElementById("icon-a").src = v.iconA;
+      document.getElementById("icon-b").src = v.iconB;
+      document.getElementById("icon-c").src = v.iconC;
+      document.getElementById("icon-d").src = v.iconD;
+
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.from("#lead", { y: -40, opacity: 0, duration: 0.7, ease: "power3.out" }, 0.2);
+      tl.from("#title-el", { y: 60, opacity: 0, duration: 0.9, ease: "expo.out" }, 0.55);
+      tl.from("#divider", { scaleX: 0, opacity: 0, duration: 0.7, ease: "power2.inOut" }, 1.25);
+      tl.from("#pill-el", { scale: 0.6, opacity: 0, duration: 0.55, ease: "back.out(2)" }, 1.7);
+
+      tl.from(
+        ["#letter-a", "#letter-b", "#letter-c", "#letter-d"],
+        { y: 40, opacity: 0, duration: 0.55, ease: "power3.out", stagger: 0.15 },
+        2.2,
+      );
+      tl.from(
+        ["#icon-a", "#icon-b", "#icon-c", "#icon-d"],
+        { scale: 0.4, opacity: 0, duration: 0.5, ease: "back.out(1.8)", stagger: 0.15 },
+        2.45,
+      );
+
+      tl.from("#quote-el", { y: 30, opacity: 0, duration: 0.8, ease: "power2.out" }, 3.6);
+
+      window.__timelines["quiz"] = tl;
+    </script>
+  </body>
+</html>
