@@ -1,6 +1,6 @@
-node_modules/
-renders/
-.thumbnails/
-.hyperframes/
+**/node_modules/
+**/renders/
+**/.thumbnails/
+**/.hyperframes/
 .DS_Store
 *.log
