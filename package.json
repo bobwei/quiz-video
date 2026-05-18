@@ -6,7 +6,7 @@
     "stamp": "node scripts/stamp-assets.mjs",
     "gen-icons": "node scripts/gen-icons.mjs",
     "predev": "npm run stamp",
-    "dev": "npx --yes hyperframes@0.6.20 preview",
+    "dev": "npx --yes hyperframes@0.6.20 preview --no-open",
     "precheck": "npm run stamp",
     "check": "npx --yes hyperframes@0.6.20 lint && npx --yes hyperframes@0.6.20 inspect",
     "prerender": "npm run stamp",
