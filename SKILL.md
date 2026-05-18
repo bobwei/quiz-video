@@ -7,7 +7,7 @@ description: Scaffold and render a vertical 9:16 (1080×1920) "quiz card" video 
 
 Scaffolds a runnable [HyperFrames](https://hyperframes.heygen.com/) project from a vetted template into a directory of the user's choice, then customizes content and renders MP4.
 
-The template lives at `templates/` next to this `SKILL.md`. It's a self-contained HyperFrames project — you can `cp -r` it anywhere and it works.
+This skill's own directory IS the template — every file alongside this `SKILL.md` (except `SKILL.md` itself and `README.md`) is part of the scaffold. After `npx skills add bobwei/quiz-video` the skill lives at `.agents/skills/quiz-video/` (or wherever the agent installs skills); copy that directory into a new project location and you have a runnable HyperFrames project.
 
 ## When to invoke
 
@@ -39,12 +39,15 @@ Ask in one batch (use AskUserQuestion if available, otherwise a numbered list). 
 ## Step 2 — Scaffold the project
 
 ```bash
-cp -r <skill-dir>/templates <target-dir>
-cd <target-dir>
+SKILL_DIR=$(dirname "$(realpath <path-to-SKILL.md>)")   # the dir containing THIS SKILL.md
+TARGET=<user-chosen-dir>
+
+rsync -a --exclude SKILL.md --exclude README.md --exclude .git "$SKILL_DIR/" "$TARGET/"
+cd "$TARGET"
 npm install
 ```
 
-This installs `sharp` (used by icon post-processing). HyperFrames itself runs via `npx`, no install needed.
+`rsync --exclude` strips the two skill-meta files so the scaffolded project doesn't carry them. Everything else — `index.html`, `assets/`, `fonts/`, `scripts/`, `package.json`, `hyperframes.json`, `meta.json`, `AGENTS.md`, `CLAUDE.md` — copies over as the working project. `npm install` then fetches `sharp` (used by icon post-processing). HyperFrames itself runs via `npx`, no install needed.
 
 ## Step 3 — Set the background video
 
@@ -167,24 +170,26 @@ Override per render: `npm run render -- --variables '{"title":"...", "pill":"...
 
 ## Files in this skill
 
+The repo root *is* the template. Everything except `SKILL.md` and `README.md` gets copied into the scaffolded project.
+
 ```
-create-quiz-video/
-├── SKILL.md                       (this file)
-└── templates/                     (drop-in HyperFrames project)
-    ├── index.html                 composition + GSAP timeline + variable defaults
-    ├── hyperframes.json
-    ├── meta.json
-    ├── package.json               npm scripts: dev / check / render / gen-icons / stamp
-    ├── package-lock.json
-    ├── AGENTS.md                  hyperframes-init's own agent notes (don't edit)
-    ├── CLAUDE.md                  same
-    ├── scripts/
-    │   ├── gen-icons.mjs          Gemini sticker icon generation
-    │   ├── post-process-icons.mjs sharp: strip white bg + auto-trim
-    │   └── stamp-assets.mjs       content-hash asset URLs for cache-busting
-    ├── fonts/
-    │   └── jf-openhuninn.woff2    justfont 粉圓 (Apache 2.0)
-    └── assets/                    sample content — replace as needed
-        ├── bg-coffee.mp4
-        └── icon-{a,b,c,d}-*.png
+quiz-video/  (this skill's directory)
+├── SKILL.md                       agent-facing instructions (this file) — NOT copied to scaffold
+├── README.md                      human-facing readme — NOT copied to scaffold
+├── index.html                     composition + GSAP timeline + variable defaults
+├── hyperframes.json
+├── meta.json
+├── package.json                   npm scripts: dev / check / render / gen-icons / stamp
+├── package-lock.json
+├── AGENTS.md                      hyperframes-init's own agent notes (don't edit)
+├── CLAUDE.md                      same
+├── scripts/
+│   ├── gen-icons.mjs              Gemini sticker icon generation
+│   ├── post-process-icons.mjs     sharp: strip white bg + auto-trim
+│   └── stamp-assets.mjs           content-hash asset URLs for cache-busting
+├── fonts/
+│   └── jf-openhuninn.woff2        justfont 粉圓 (Apache 2.0)
+└── assets/                        sample content — replace as needed
+    ├── bg-coffee.mp4
+    └── icon-{a,b,c,d}-*.png
 ```
