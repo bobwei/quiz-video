@@ -9,6 +9,21 @@ Scaffolds a runnable [HyperFrames](https://hyperframes.heygen.com/) project from
 
 This skill's own directory IS the template — every file alongside this `SKILL.md` (except `SKILL.md` itself and `README.md`) is part of the scaffold. After `npx skills add bobwei/quiz-video` the skill lives at `.agents/skills/quiz-video/` (or wherever the agent installs skills); copy that directory into a new project location and you have a runnable HyperFrames project.
 
+## Fast path — just use the CLI
+
+If the user's request maps cleanly to the template (lead-in + title + pill + 3-4 options + CTA, no custom layout changes), prefer the bundled CLI over scaffolding manually:
+
+```bash
+npx github:bobwei/quiz-video \
+  --dir <target> \
+  --title "..." --pill "..." --options "a,b,c,d" \
+  --lead-in "..." --cta "..." \
+  --bg <path|url|sample> \
+  --gen-icons --render
+```
+
+It handles steps 2-6 below in one command (scaffold, content variables, 3-vs-4-option layout surgery, background swap, Gemini icon gen, render). Reach for the manual steps only when the user wants something the CLI doesn't expose — custom layout, extra options, swapping fonts, etc.
+
 ## When to invoke
 
 Trigger phrases (Chinese + English): "做 quiz 影片", "建立選擇題影片", "做一支 IG quiz", "套那個 quiz 模板", "create a quiz card video", "make a multiple-choice reel", "你最喜歡哪款 X 影片".

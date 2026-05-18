@@ -1,7 +1,10 @@
 {
-  "name": "quiz-video",
+  "name": "create-quiz-video",
   "private": true,
   "type": "module",
+  "bin": {
+    "create-quiz-video": "./bin/cli.mjs"
+  },
   "scripts": {
     "stamp": "node scripts/stamp-assets.mjs",
     "gen-icons": "node scripts/gen-icons.mjs",
